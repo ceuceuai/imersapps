@@ -835,19 +835,64 @@ function renderLogo(sizeClass = "w-10 h-10", iconSize = "w-5 h-5") {
         }
 
         function hydrateCachedBranding() {
-            try {
-                const cachedLogo = localStorage.getItem('imerswallet_app_logo');
-                const cachedBotNumber = localStorage.getItem('imerswallet_bot_number');
 
-                if (cachedLogo) state.data.settings.APP_LOGO = cachedLogo;
-                if (cachedBotNumber) CONFIG.BOT_NUMBER = cachedBotNumber;
-                const cachedFooter = localStorage.getItem('imerswallet_footer_text');
-                if (cachedFooter) state.data.settings.APP_FOOTER_TEXT = cachedFooter;
-            } catch (e) {}
+    try {
 
-            updateLogosInUI();
-            updateFooterInUI();
+        // FIX SETTINGS OBJECT
+        if (!state.data.settings) {
+            state.data.settings = {};
         }
+
+        const cachedLogo =
+            localStorage.getItem('imerswallet_app_logo');
+
+        const cachedBotNumber =
+            localStorage.getItem('imerswallet_bot_number');
+
+        const cachedFooter =
+            localStorage.getItem('imerswallet_footer_text');
+
+        // LOGO
+        if (
+            cachedLogo &&
+            cachedLogo.trim() !== ""
+        ) {
+
+            state.data.settings.APP_LOGO =
+                cachedLogo.trim();
+        }
+
+        // BOT NUMBER
+        if (
+            cachedBotNumber &&
+            cachedBotNumber.trim() !== ""
+        ) {
+
+            CONFIG.BOT_NUMBER =
+                cachedBotNumber.trim();
+        }
+
+        // FOOTER
+        if (
+            cachedFooter &&
+            cachedFooter.trim() !== ""
+        ) {
+
+            state.data.settings.APP_FOOTER_TEXT =
+                cachedFooter.trim();
+        }
+
+    } catch (e) {
+
+        console.warn(
+            "Gagal hydrate branding cache",
+            e
+        );
+    }
+
+    updateLogosInUI();
+    updateFooterInUI();
+}
 
         async function preloadBrandingBeforePin() {
             hydrateCachedBranding();
