@@ -822,6 +822,8 @@ function renderLogo(sizeClass = "w-10 h-10", iconSize = "w-5 h-5") {
             updateLogosInUI();
             updateFooterInUI();
         }
+        localStorage.removeItem('imerswallet_logo');
+localStorage.removeItem('app_logo');
 
         function hydrateCachedBranding() {
 
