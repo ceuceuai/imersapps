@@ -887,10 +887,45 @@
                 }
                 
                 if (result && result.status === 'success') {
+
+                    const cachedLogo =
+                        localStorage.getItem('imerswallet_app_logo') ||
+                        localStorage.getItem('imerswallet_logo_backup') ||
+                        '';
+
+                    const cachedFooter =
+                        localStorage.getItem('imerswallet_footer_text') || '';
+
                     state.data = result;
                     state.isUsingDemo = false;
-                    CONFIG.BOT_NUMBER = result.settings.BOT_NUMBER || CONFIG.BOT_NUMBER;
-                    applyBrandingSettings(result.settings || {});
+
+                    if (!state.data.settings) {
+                        state.data.settings = {};
+                    }
+
+                    // FORCE restore logo kalau backend kosong
+                    if (
+                        !state.data.settings.APP_LOGO ||
+                        String(state.data.settings.APP_LOGO).trim() === ""
+                    ) {
+                        state.data.settings.APP_LOGO = cachedLogo;
+                    }
+
+                    // FORCE restore footer kalau backend kosong
+                    if (
+                        !state.data.settings.APP_FOOTER_TEXT ||
+                        String(state.data.settings.APP_FOOTER_TEXT).trim() === ""
+                    ) {
+                        state.data.settings.APP_FOOTER_TEXT = cachedFooter;
+                    }
+
+                    CONFIG.BOT_NUMBER =
+                        result.settings?.BOT_NUMBER || CONFIG.BOT_NUMBER;
+
+                    applyBrandingSettings(state.data.settings || {});
+                    updateLogosInUI();
+                    updateFooterInUI();
+
                     showToast("Pangkalan Data Sinkron Real-time!", "success");
                 } else {
                     throw new Error("Format tidak sesuai.");
