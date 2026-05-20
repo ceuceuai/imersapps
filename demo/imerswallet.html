@@ -601,27 +601,44 @@
 
 
         // --- RENDER LOGO DINAMIS (Logo Kustom / Ikon Dompet Default) ---
-        // MEMBUAT LOGO TRANSPARAN BEBAS DARI BACKGROUND PUTIH KOTAK
-        function renderLogo(sizeClass = "w-10 h-10", iconSize = "w-5 h-5") {
-            const logoUrl = state.data.settings.APP_LOGO || "";
-            const isLockscreenLogo = sizeClass.includes("w-24") || sizeClass.includes("h-24") || sizeClass.includes("w-20") || sizeClass.includes("h-20");
+// MEMBUAT LOGO TRANSPARAN BEBAS DARI BACKGROUND PUTIH KOTAK
+function renderLogo(sizeClass = "w-10 h-10", iconSize = "w-5 h-5") {
 
-            if (logoUrl && logoUrl.trim() !== "" && logoUrl.startsWith("http")) {
-                return `
-                    <div class="relative ${sizeClass} mx-auto flex items-center justify-center logo-transparent-wrap">
-                        <img 
-                            src="${logoUrl}" 
-                            class="logo-transparent-img ${isLockscreenLogo ? 'scale-[1.35]' : 'scale-[1.08]'}" 
-                            alt="Logo iMersWallet" 
-                            onerror="handleLogoError(this, '${sizeClass}', '${iconSize}')"
-                        >
-                    </div>
-                `;
-            }
+    const logoUrl =
+        state?.data?.settings?.APP_LOGO ||
+        localStorage.getItem('imerswallet_app_logo') ||
+        "";
 
-            return `<div class="${sizeClass} mx-auto bg-dana rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-200"><i data-lucide="wallet" class="${iconSize}"></i></div>`;
-        }
+    const isLockscreenLogo =
+        sizeClass.includes("w-24") ||
+        sizeClass.includes("h-24") ||
+        sizeClass.includes("w-20") ||
+        sizeClass.includes("h-20");
 
+    if (
+        logoUrl &&
+        logoUrl.trim() !== "" &&
+        logoUrl.startsWith("http")
+    ) {
+
+        return `
+            <div class="relative ${sizeClass} mx-auto flex items-center justify-center logo-transparent-wrap">
+                <img 
+                    src="${logoUrl}" 
+                    class="logo-transparent-img ${isLockscreenLogo ? 'scale-[1.35]' : 'scale-[1.08]'}" 
+                    alt="Logo iMersWallet" 
+                    onerror="handleLogoError(this, '${sizeClass}', '${iconSize}')"
+                >
+            </div>
+        `;
+    }
+
+    return `
+        <div class="${sizeClass} mx-auto bg-dana rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-200">
+            <i data-lucide="wallet" class="${iconSize}"></i>
+        </div>
+    `;
+}
         function handleLogoError(imgElement, sizeClass, iconSize) {
             const container = imgElement.parentElement;
             if (container) {
