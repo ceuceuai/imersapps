@@ -603,11 +603,12 @@
         // --- RENDER LOGO DINAMIS (Logo Kustom / Ikon Dompet Default) ---
 // MEMBUAT LOGO TRANSPARAN BEBAS DARI BACKGROUND PUTIH KOTAK
 function renderLogo(sizeClass = "w-10 h-10", iconSize = "w-5 h-5") {
+    let logoUrl = state.data.settings.APP_LOGO || "";
 
-    const logoUrl =
-        state?.data?.settings?.APP_LOGO ||
-        localStorage.getItem('imerswallet_app_logo') ||
-        "";
+    // FORCE CLEAR CACHE
+    if (logoUrl && logoUrl.includes("http")) {
+        logoUrl += (logoUrl.includes('?') ? '&' : '?') + 'v=' + Date.now();
+    }
 
     const isLockscreenLogo =
         sizeClass.includes("w-24") ||
@@ -615,18 +616,13 @@ function renderLogo(sizeClass = "w-10 h-10", iconSize = "w-5 h-5") {
         sizeClass.includes("w-20") ||
         sizeClass.includes("h-20");
 
-    if (
-        logoUrl &&
-        logoUrl.trim() !== "" &&
-        logoUrl.startsWith("http")
-    ) {
-
+    if (logoUrl && logoUrl.trim() !== "") {
         return `
-            <div class="relative ${sizeClass} mx-auto flex items-center justify-center logo-transparent-wrap">
-                <img 
-                    src="${logoUrl}" 
-                    class="logo-transparent-img ${isLockscreenLogo ? 'scale-[1.35]' : 'scale-[1.08]'}" 
-                    alt="Logo iMersWallet" 
+            <div class="relative ${sizeClass} mx-auto flex items-center justify-center overflow-hidden">
+                <img
+                    src="${logoUrl}"
+                    class="object-contain w-full h-full ${isLockscreenLogo ? 'scale-[1.15]' : 'scale-[1.05]'}"
+                    alt="Logo iMersWallet"
                     onerror="handleLogoError(this, '${sizeClass}', '${iconSize}')"
                 >
             </div>
@@ -639,13 +635,6 @@ function renderLogo(sizeClass = "w-10 h-10", iconSize = "w-5 h-5") {
         </div>
     `;
 }
-        function handleLogoError(imgElement, sizeClass, iconSize) {
-            const container = imgElement.parentElement;
-            if (container) {
-                container.innerHTML = `<div class="${sizeClass} mx-auto bg-dana rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-200"><i data-lucide="wallet" class="${iconSize}"></i></div>`;
-                lucide.createIcons();
-            }
-        }
 
         function updateLogosInUI() {
             const sidebarContainer = document.getElementById('sidebar-logo-container');
