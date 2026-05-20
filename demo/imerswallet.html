@@ -434,18 +434,18 @@
                 "Belanja": 2000000
             },
             settings: {
-    FONNTE_TOKEN: "",
-    BOT_NUMBER: "628123456789",
-    USER_EMAIL: "owner@example.com",
+                FONNTE_TOKEN: "",
+                BOT_NUMBER: "628123456789",
+                USER_EMAIL: "owner@example.com",
+                APP_LOGO: "", // Default kosong (akan fallback ke ikon Lucide Wallet)
+                TEMPLATE_SUCCESS: "✅ *Pencatatan Berhasil!*\n\n📂 *KANTONG: {wallet}*\n💰 *TIPE: {type}*\n📝 Kategori: {category}\n💬 Catatan: {note}\n💸 Nominal: *Rp{amount}*",
+                TEMPLATE_OVER_BUDGET: "⚠️ *WARNING BUDGET JEBOL!* ⚠️\n\nPengeluaran Anda pada kategori *{category}* telah melebihi batas anggaran bulanan!\n\n💸 Terpakai: *Rp{spent}*\n📊 Batas Anggaran: *Rp{limit}*",
+                TEMPLATE_WARN_BUDGET: "⚠️ *PERINGATAN HEMAT!* ⚠️\n\nPengeluaran kategori *{category}* sudah mencapai *{ratio}%* dari batas anggaran bulanan Anda.",
+                TEMPLATE_WEEKLY_REPORT: "📊 *LAPORAN MINGGUAN iMersWallet* 📊\n\n📈 Pemasukan: *Rp{income}*\n📉 Pengeluaran: *Rp{expense}*"
+            }
+        };
 
-    APP_LOGO:
-        localStorage.getItem('imerswallet_app_logo') || "",
-    TEMPLATE_SUCCESS: "✅ *Pencatatan Berhasil!*\n\n📂 *KANTONG: {wallet}*\n💰 *TIPE: {type}*\n📝 Kategori: {category}\n💬 Catatan: {note}\n💸 Nominal: *Rp{amount}*",
-    TEMPLATE_OVER_BUDGET: "⚠️ *WARNING BUDGET JEBOL!* ⚠️\n\nPengeluaran Anda pada kategori *{category}* telah melebihi batas anggaran bulanan!\n\n💸 Terpakai: *Rp{spent}*\n📊 Batas Anggaran: *Rp{limit}*",
-    TEMPLATE_WARN_BUDGET: "⚠️ *PERINGATAN HEMAT!* ⚠️\n\nPengeluaran kategori *{category}* sudah mencapai *{ratio}%* dari batas anggaran bulanan Anda.",
-    TEMPLATE_WEEKLY_REPORT: "📊 *LAPORAN MINGGUAN iMersWallet* 📊\n\n📈 Pemasukan: *Rp{income}*\n📉 Pengeluaran: *Rp{expense}*"
-}
-            
+
         // --- EXTENSION DATA DINAMIS: USERS, WALLETS, BUDGET, FOOTER ---
         DUMMY_DATA.wallets = [
             { wallet: "Pribadi", active: true, label: "Kantong Pribadi", sort: 1, keywords: ["pribadi", "peribadi", "personal"] },
@@ -601,40 +601,34 @@
 
 
         // --- RENDER LOGO DINAMIS (Logo Kustom / Ikon Dompet Default) ---
-// MEMBUAT LOGO TRANSPARAN BEBAS DARI BACKGROUND PUTIH KOTAK
-function renderLogo(sizeClass = "w-10 h-10", iconSize = "w-5 h-5") {
-    let logoUrl = state.data.settings.APP_LOGO || "";
+        // MEMBUAT LOGO TRANSPARAN BEBAS DARI BACKGROUND PUTIH KOTAK
+        function renderLogo(sizeClass = "w-10 h-10", iconSize = "w-5 h-5") {
+            const logoUrl = state.data.settings.APP_LOGO || "";
+            const isLockscreenLogo = sizeClass.includes("w-24") || sizeClass.includes("h-24") || sizeClass.includes("w-20") || sizeClass.includes("h-20");
 
-    // FORCE CLEAR CACHE
-    if (logoUrl && logoUrl.includes("http")) {
-        logoUrl += (logoUrl.includes('?') ? '&' : '?') + 'v=' + Date.now();
-    }
+            if (logoUrl && logoUrl.trim() !== "" && logoUrl.startsWith("http")) {
+                return `
+                    <div class="relative ${sizeClass} mx-auto flex items-center justify-center logo-transparent-wrap">
+                        <img 
+                            src="${logoUrl}" 
+                            class="logo-transparent-img ${isLockscreenLogo ? 'scale-[1.35]' : 'scale-[1.08]'}" 
+                            alt="Logo iMersWallet" 
+                            onerror="handleLogoError(this, '${sizeClass}', '${iconSize}')"
+                        >
+                    </div>
+                `;
+            }
 
-    const isLockscreenLogo =
-        sizeClass.includes("w-24") ||
-        sizeClass.includes("h-24") ||
-        sizeClass.includes("w-20") ||
-        sizeClass.includes("h-20");
+            return `<div class="${sizeClass} mx-auto bg-dana rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-200"><i data-lucide="wallet" class="${iconSize}"></i></div>`;
+        }
 
-    if (logoUrl && logoUrl.trim() !== "") {
-        return `
-            <div class="relative ${sizeClass} mx-auto flex items-center justify-center overflow-hidden">
-                <img
-                    src="${logoUrl}"
-                    class="object-contain w-full h-full ${isLockscreenLogo ? 'scale-[1.15]' : 'scale-[1.05]'}"
-                    alt="Logo iMersWallet"
-                    onerror="handleLogoError(this, '${sizeClass}', '${iconSize}')"
-                >
-            </div>
-        `;
-    }
-
-    return `
-        <div class="${sizeClass} mx-auto bg-dana rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-200">
-            <i data-lucide="wallet" class="${iconSize}"></i>
-        </div>
-    `;
-}
+        function handleLogoError(imgElement, sizeClass, iconSize) {
+            const container = imgElement.parentElement;
+            if (container) {
+                container.innerHTML = `<div class="${sizeClass} mx-auto bg-dana rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-200"><i data-lucide="wallet" class="${iconSize}"></i></div>`;
+                lucide.createIcons();
+            }
+        }
 
         function updateLogosInUI() {
             const sidebarContainer = document.getElementById('sidebar-logo-container');
@@ -822,68 +816,21 @@ function renderLogo(sizeClass = "w-10 h-10", iconSize = "w-5 h-5") {
             updateLogosInUI();
             updateFooterInUI();
         }
-        localStorage.removeItem('imerswallet_logo');
-localStorage.removeItem('app_logo');
 
         function hydrateCachedBranding() {
+            try {
+                const cachedLogo = localStorage.getItem('imerswallet_app_logo');
+                const cachedBotNumber = localStorage.getItem('imerswallet_bot_number');
 
-    try {
+                if (cachedLogo) state.data.settings.APP_LOGO = cachedLogo;
+                if (cachedBotNumber) CONFIG.BOT_NUMBER = cachedBotNumber;
+                const cachedFooter = localStorage.getItem('imerswallet_footer_text');
+                if (cachedFooter) state.data.settings.APP_FOOTER_TEXT = cachedFooter;
+            } catch (e) {}
 
-        // FIX SETTINGS OBJECT
-        if (!state.data.settings) {
-            state.data.settings = {};
+            updateLogosInUI();
+            updateFooterInUI();
         }
-
-        const cachedLogo =
-            localStorage.getItem('imerswallet_app_logo');
-
-        const cachedBotNumber =
-            localStorage.getItem('imerswallet_bot_number');
-
-        const cachedFooter =
-            localStorage.getItem('imerswallet_footer_text');
-
-        // LOGO
-        if (
-            cachedLogo &&
-            cachedLogo.trim() !== ""
-        ) {
-
-            state.data.settings.APP_LOGO =
-                cachedLogo.trim();
-        }
-
-        // BOT NUMBER
-        if (
-            cachedBotNumber &&
-            cachedBotNumber.trim() !== ""
-        ) {
-
-            CONFIG.BOT_NUMBER =
-                cachedBotNumber.trim();
-        }
-
-        // FOOTER
-        if (
-            cachedFooter &&
-            cachedFooter.trim() !== ""
-        ) {
-
-            state.data.settings.APP_FOOTER_TEXT =
-                cachedFooter.trim();
-        }
-
-    } catch (e) {
-
-        console.warn(
-            "Gagal hydrate branding cache",
-            e
-        );
-    }
-
-    updateLogosInUI();
-    updateFooterInUI();
-}
 
         async function preloadBrandingBeforePin() {
             hydrateCachedBranding();
@@ -918,38 +865,11 @@ localStorage.removeItem('app_logo');
                 }
                 
                 if (result && result.status === 'success') {
-                    // AMBIL CACHE LOGO
-const cachedLogo =
-    localStorage.getItem('imerswallet_app_logo') || '';
-
-state.data = result;
-
-// FIX LOGO HILANG
-if (
-    !state.data.settings.APP_LOGO ||
-    state.data.settings.APP_LOGO === ""
-) {
-
-    state.data.settings.APP_LOGO = cachedLogo;
-}
-
-// FIX BOT NUMBER
-CONFIG.BOT_NUMBER =
-    result.settings.BOT_NUMBER || CONFIG.BOT_NUMBER;
-
-// APPLY BRANDING
-applyBrandingSettings(result.settings || {});
-
-// PAKSA UPDATE UI
-updateLogosInUI();
-updateFooterInUI();
-
-state.isUsingDemo = false;
-
-showToast(
-    "Pangkalan Data Sinkron Real-time!",
-    "success"
-);
+                    state.data = result;
+                    state.isUsingDemo = false;
+                    CONFIG.BOT_NUMBER = result.settings.BOT_NUMBER || CONFIG.BOT_NUMBER;
+                    applyBrandingSettings(result.settings || {});
+                    showToast("Pangkalan Data Sinkron Real-time!", "success");
                 } else {
                     throw new Error("Format tidak sesuai.");
                 }
