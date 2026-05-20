@@ -434,18 +434,21 @@
                 "Belanja": 2000000
             },
             settings: {
-                FONNTE_TOKEN: "",
-                BOT_NUMBER: "628123456789",
-                USER_EMAIL: "owner@example.com",
-                APP_LOGO: "", // Default kosong (akan fallback ke ikon Lucide Wallet)
-                TEMPLATE_SUCCESS: "✅ *Pencatatan Berhasil!*\n\n📂 *KANTONG: {wallet}*\n💰 *TIPE: {type}*\n📝 Kategori: {category}\n💬 Catatan: {note}\n💸 Nominal: *Rp{amount}*",
-                TEMPLATE_OVER_BUDGET: "⚠️ *WARNING BUDGET JEBOL!* ⚠️\n\nPengeluaran Anda pada kategori *{category}* telah melebihi batas anggaran bulanan!\n\n💸 Terpakai: *Rp{spent}*\n📊 Batas Anggaran: *Rp{limit}*",
-                TEMPLATE_WARN_BUDGET: "⚠️ *PERINGATAN HEMAT!* ⚠️\n\nPengeluaran kategori *{category}* sudah mencapai *{ratio}%* dari batas anggaran bulanan Anda.",
-                TEMPLATE_WEEKLY_REPORT: "📊 *LAPORAN MINGGUAN iMersWallet* 📊\n\n📈 Pemasukan: *Rp{income}*\n📉 Pengeluaran: *Rp{expense}*"
-            }
-        };
+    FONNTE_TOKEN: "",
+    BOT_NUMBER: "628123456789",
+    USER_EMAIL: "owner@example.com",
 
+    APP_LOGO:
+        localStorage.getItem('imerswallet_app_logo') || "",
 
+    TEMPLATE_SUCCESS: "✅ *Pencatatan Berhasil!*\n\n📂 *KANTONG: {wallet}*\n💰 *TIPE: {type}*\n📝 Kategori: {category}\n💬 Catatan: {note}\n💸 Nominal: *Rp{amount}*",
+
+    TEMPLATE_OVER_BUDGET: "⚠️ *WARNING BUDGET JEBOL!* ⚠️\n\nPengeluaran Anda pada kategori *{category}* telah melebihi batas anggaran bulanan!\n\n💸 Terpakai: *Rp{spent}*\n📊 Batas Anggaran: *Rp{limit}*",
+
+    TEMPLATE_WARN_BUDGET: "⚠️ *PERINGATAN HEMAT!* ⚠️\n\nPengeluaran kategori *{category}* sudah mencapai *{ratio}%* dari batas anggaran bulanan Anda.",
+
+    TEMPLATE_WEEKLY_REPORT: "📊 *LAPORAN MINGGUAN iMersWallet* 📊\n\n📈 Pemasukan: *Rp{income}*\n📉 Pengeluaran: *Rp{expense}*"
+}
         // --- EXTENSION DATA DINAMIS: USERS, WALLETS, BUDGET, FOOTER ---
         DUMMY_DATA.wallets = [
             { wallet: "Pribadi", active: true, label: "Kantong Pribadi", sort: 1, keywords: ["pribadi", "peribadi", "personal"] },
