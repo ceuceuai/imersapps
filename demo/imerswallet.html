@@ -606,7 +606,16 @@
             const logoUrl = state.data.settings.APP_LOGO || "";
             const isLockscreenLogo = sizeClass.includes("w-24") || sizeClass.includes("h-24") || sizeClass.includes("w-20") || sizeClass.includes("h-20");
 
-            if (logoUrl && logoUrl.trim() !== "" && logoUrl.startsWith("http")) {
+            if (
+                logoUrl &&
+                logoUrl.trim() !== "" &&
+                (
+                    logoUrl.startsWith("http") ||
+                    logoUrl.startsWith("data:image") ||
+                    logoUrl.startsWith("./") ||
+                    logoUrl.startsWith("/")
+                )
+            ) {
                 return `
                     <div class="relative ${sizeClass} mx-auto flex items-center justify-center logo-transparent-wrap">
                         <img 
@@ -789,11 +798,24 @@
         function applyBrandingSettings(settings = {}) {
             if (!settings) return;
 
-            if (settings.APP_LOGO && String(settings.APP_LOGO).trim() !== "") {
-                state.data.settings.APP_LOGO = String(settings.APP_LOGO).trim();
-                try {
-                    localStorage.setItem('imerswallet_app_logo', state.data.settings.APP_LOGO);
-                } catch (e) {}
+            if (settings.APP_LOGO !== undefined) {
+                const incomingLogo = String(settings.APP_LOGO || "").trim();
+
+                if (incomingLogo !== "") {
+                    state.data.settings.APP_LOGO = incomingLogo;
+
+                    try {
+                        localStorage.setItem('imerswallet_app_logo', incomingLogo);
+                        localStorage.setItem('imerswallet_logo_backup', incomingLogo);
+                    } catch (e) {}
+                } else {
+                    try {
+                        const backupLogo = localStorage.getItem('imerswallet_logo_backup');
+                        if (backupLogo) {
+                            state.data.settings.APP_LOGO = backupLogo;
+                        }
+                    } catch (e) {}
+                }
             }
 
             if (settings.BOT_NUMBER && String(settings.BOT_NUMBER).trim() !== "") {
@@ -819,7 +841,7 @@
 
         function hydrateCachedBranding() {
             try {
-                const cachedLogo = localStorage.getItem('imerswallet_app_logo');
+                const cachedLogo = localStorage.getItem('imerswallet_app_logo') || localStorage.getItem('imerswallet_logo_backup');
                 const cachedBotNumber = localStorage.getItem('imerswallet_bot_number');
 
                 if (cachedLogo) state.data.settings.APP_LOGO = cachedLogo;
@@ -1844,7 +1866,24 @@
                 template_weekly_report: tmplWeekly
             });
 
-            showToast("Menyimpan Pengaturan Ke Google Sheet...", "success");
+            
+            try {
+                localStorage.setItem('imerswallet_app_logo', logoVal);
+                localStorage.setItem('imerswallet_logo_backup', logoVal);
+                localStorage.setItem('imerswallet_footer_text', footerVal);
+                localStorage.setItem('imerswallet_bot_number', botVal);
+
+                state.data.settings.APP_LOGO = logoVal;
+                state.data.settings.APP_FOOTER_TEXT = footerVal;
+                CONFIG.BOT_NUMBER = botVal;
+
+                updateLogosInUI();
+                updateFooterInUI();
+            } catch (e) {
+                console.log('Local save gagal', e);
+            }
+
+showToast("Menyimpan Pengaturan Ke Google Sheet...", "success");
 
             try {
                 const response = await fetchWithTimeout(`${CONFIG.API_URL}?${queryParams.toString()}`, { timeout: 15000 });
