@@ -865,11 +865,38 @@
                 }
                 
                 if (result && result.status === 'success') {
-                    state.data = result;
-                    state.isUsingDemo = false;
-                    CONFIG.BOT_NUMBER = result.settings.BOT_NUMBER || CONFIG.BOT_NUMBER;
-                    applyBrandingSettings(result.settings || {});
-                    showToast("Pangkalan Data Sinkron Real-time!", "success");
+                    // AMBIL CACHE LOGO
+const cachedLogo =
+    localStorage.getItem('imerswallet_app_logo') || '';
+
+state.data = result;
+
+// FIX LOGO HILANG
+if (
+    !state.data.settings.APP_LOGO ||
+    state.data.settings.APP_LOGO === ""
+) {
+
+    state.data.settings.APP_LOGO = cachedLogo;
+}
+
+// FIX BOT NUMBER
+CONFIG.BOT_NUMBER =
+    result.settings.BOT_NUMBER || CONFIG.BOT_NUMBER;
+
+// APPLY BRANDING
+applyBrandingSettings(result.settings || {});
+
+// PAKSA UPDATE UI
+updateLogosInUI();
+updateFooterInUI();
+
+state.isUsingDemo = false;
+
+showToast(
+    "Pangkalan Data Sinkron Real-time!",
+    "success"
+);
                 } else {
                     throw new Error("Format tidak sesuai.");
                 }
