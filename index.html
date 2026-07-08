@@ -1,3 +1,5 @@
+
+
 <style>
 .im-wrapper { 
     font-family: 'Inter', sans-serif; 
@@ -175,8 +177,8 @@
     <input type="text" name="Nama Lengkap" class="im-input" placeholder="Sesuai KTP/Panggilan" required>
 </div>
 <div class="im-group">
-    <label class="im-label">No WhatsApp <span style="color:#e11d48">*</span></label>
-    <input type="tel" name="No WhatsApp" class="im-input" placeholder="Contoh: 0812..." required>
+    <label class="im-label">No. WhatsApp <span style="color:#e11d48">*</span></label>
+    <input type="tel" name="No. WhatsApp" class="im-input" placeholder="" required>
 </div>
 
         <div class="im-footer">
@@ -299,58 +301,14 @@ let sessionLeadId = 'LD_' + Date.now() + '_' + Math.random().toString(36).substr
 
 // Track Form View on Load
 (function() {
-    const sheetUrl = 'https://script.google.com/macros/s/AKfycbzJtkwRKHXq5YH_S4tspuzz5B3N_FdOKy1bT6Ovqcqn8m9tPQufedB6M85fzW1jMOpZ/exec';
+    const sheetUrl = 'https://script.google.com/macros/s/AKfycbxY1yXfvrNPrvi0hKs1bHc8LmkEdaX-APvdMs1W0VlBJD-0cSGLHIyFXp8oQ07fyMDL/exec';
     if(sheetUrl && sheetUrl.startsWith('http')) {
         fetch(sheetUrl + "?action=track_view&form_name=" + encodeURIComponent('Konsultasi Gratis 30 Menit'), {
-            method: 'GET',
-            mode: 'no-cors'
-        });
+            method: 'GET'
+        }).catch(e => console.log('Tracking silent fail', e));
     }
 })();
 
-
-let captureTimeout;
-let lastCapturedData = '';
-const formElCap = document.getElementById('im-form');
-formElCap.addEventListener('input', function(e) {
-    clearTimeout(captureTimeout);
-    captureTimeout = setTimeout(() => {
-        const fd = new FormData(formElCap);
-        const telInput = formElCap.querySelector('input[type="tel"]');
-        if (!telInput || !telInput.value) return;
-        
-        if (validateWA(telInput.value)) {
-            let formObj = {}; 
-            for (let [key, value] of fd.entries()) { 
-                if (formObj[key]) formObj[key] += ', ' + value; 
-                else formObj[key] = value; 
-            } 
-            
-            let jsonData = {
-                Waktu_Order: new Date().toLocaleString(),
-                Nama_Form: 'Konsultasi Gratis 30 Menit',
-                wa_target: '',
-                Status_Pesanan: 'UNFINISHED',
-                Lead_ID: sessionLeadId
-            };
-            for (let key in formObj) { jsonData[key] = formObj[key]; }
-            
-            let finalTotal = calculateTotal();
-            if (finalTotal > 0) jsonData['Total_Tagihan'] = finalTotal;
-            
-            const currentDataStr = JSON.stringify(jsonData);
-            if (currentDataStr !== lastCapturedData) {
-                lastCapturedData = currentDataStr;
-                fetch('https://script.google.com/macros/s/AKfycbzJtkwRKHXq5YH_S4tspuzz5B3N_FdOKy1bT6Ovqcqn8m9tPQufedB6M85fzW1jMOpZ/exec', {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {'Content-Type': 'application/json'},
-                    body: currentDataStr
-                });
-            }
-        }
-    }, 1500);
-});
 
 
 document.getElementById('im-form').addEventListener('submit', function(e) { 
@@ -395,39 +353,42 @@ document.getElementById('im-form').addEventListener('submit', function(e) {
         jsonData['Total_Tagihan'] = finalTotal; 
     } 
     
-    const sheetUrl = 'https://script.google.com/macros/s/AKfycbzJtkwRKHXq5YH_S4tspuzz5B3N_FdOKy1bT6Ovqcqn8m9tPQufedB6M85fzW1jMOpZ/exec'; 
+    const sheetUrl = 'https://script.google.com/macros/s/AKfycbxY1yXfvrNPrvi0hKs1bHc8LmkEdaX-APvdMs1W0VlBJD-0cSGLHIyFXp8oQ07fyMDL/exec'; 
     
     // Tembak Tracking Pixel
     
     
     if(sheetUrl && sheetUrl.startsWith('http')) { 
+        // 🔥 CORS SAKTI FIX: Mengubah Content-Type menjadi text/plain agar Google tidak memblokir (Mode no-cors dihilangkan agar request sukses terkirim)
         fetch(sheetUrl, { 
             method: 'POST', 
-            mode: 'no-cors', 
-            headers: {'Content-Type': 'application/json'}, 
+            headers: {
+                'Content-Type': 'text/plain;charset=utf-8',
+            }, 
             body: JSON.stringify(jsonData) 
-        }).then(() => { 
+        }).then(response => {
+            console.log("Response dari server:", response);
             btn.innerText = 'Terkirim ✓'; 
             btn.style.background = '#10b981'; 
             btn.style.color = '#fff';
         }).catch((err) => { 
-            console.error(err);
-            btn.innerText = 'Terkirim ✓'; 
-            btn.style.background = '#10b981'; 
+            console.error("Gagal mengirim data:", err);
+            btn.innerText = 'Gagal Mengirim ✕'; 
+            btn.style.background = '#ef4444'; 
             btn.style.color = '#fff';
+            
+            // Re-enable button biar bisa dicoba lagi
+            setTimeout(() => {
+                btn.innerText = '💬 Booking Konsultasi';
+                btn.style.background = 'linear-gradient(135deg, #60a5fa, #2563eb)';
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
+            }, 3000);
         }); 
-        
-        setTimeout(() => { 
-            if(btn.innerText === 'Memproses...') { 
-                btn.innerText = 'Terkirim ✓'; 
-                btn.style.background = '#10b981'; 
-                btn.style.color = '#fff';
-            } 
-        }, 3500); 
     } else { 
-        btn.innerText = 'Terkirim ✓'; 
-        btn.style.background = '#10b981'; 
-        btn.style.color = '#fff';
+        console.error("URL Web App kosong!");
+        btn.innerText = 'Error URL ✕'; 
+        btn.style.background = '#ef4444'; 
     } 
 });
 </script>
