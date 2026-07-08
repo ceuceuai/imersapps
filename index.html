@@ -1,5 +1,3 @@
-
-
 <style>
 .im-wrapper { 
     font-family: 'Inter', sans-serif; 
@@ -168,17 +166,17 @@
     <div class="im-header" style="background: linear-gradient(135deg, #0ea5e9, #1e3a8a)">
         <img src="undefined" class="im-logo" alt="Logo">
 
-        <h2 class="im-title" style="color: #ffffff;">Reservasi Jadwal Layanan</h2>
+        <h2 class="im-title" style="color: #ffffff;">Konsultasi Gratis 30 Menit</h2>
 
     </div>
     <form id="im-form" class="im-body" onsubmit="return false;">
         <div class="im-group">
-    <label class="im-label">Nama Pelanggan <span style="color:#e11d48">*</span></label>
-    <input type="text" name="Nama Pelanggan" class="im-input" placeholder="Nama Anda" required>
+    <label class="im-label">Nama Lengkap <span style="color:#e11d48">*</span></label>
+    <input type="text" name="Nama Lengkap" class="im-input" placeholder="Sesuai KTP/Panggilan" required>
 </div>
 <div class="im-group">
-    <label class="im-label">Nomor HP (Bisa Dihubungi) <span style="color:#e11d48">*</span></label>
-    <input type="tel" name="Nomor HP (Bisa Dihubungi)" class="im-input" placeholder="08xxxx" required>
+    <label class="im-label">No WhatsApp <span style="color:#e11d48">*</span></label>
+    <input type="tel" name="No WhatsApp" class="im-input" placeholder="Contoh: 0812..." required>
 </div>
 
         <div class="im-footer">
@@ -189,8 +187,26 @@
                 </div>
             
             
+                <div class="im-trust">
+                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" style="color:#60a5fa; flex-shrink:0">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        <polyline points="9 12 11 14 15 10"></polyline>
+                    </svg>
+                    <div>
+                        <div class="im-trust-title">Aman & Terpercaya</div>
+                        <div class="im-trust-desc">Semua data dan cerita bisnis Anda aman bersama kami.</div>
+                    </div>
+                </div>
             
-            <button id="im-submit-btn" type="submit" class="im-btn" style="background: linear-gradient(135deg, #60a5fa, #2563eb)"><span style="color: #ffffff;">📅 Konfirmasi Jadwal</span></button>
+            
+                <div class="im-timer-wrap">
+                    <div class="im-timer">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        <span id="im-time-display">15:00</span>
+                    </div>
+                </div>
+            
+            <button id="im-submit-btn" type="submit" class="im-btn" style="background: linear-gradient(135deg, #60a5fa, #2563eb)"><span style="color: #ffffff;">💬 Booking Konsultasi</span></button>
         </div>
     </form>
     
@@ -257,6 +273,16 @@ document.getElementById('im-form').addEventListener('change', calculateTotal);
 calculateTotal();
 
 
+let timeInSecs = 15 * 60;
+let timerInterval = setInterval(() => {
+    if(timeInSecs <= 0) { clearInterval(timerInterval); return; }
+    timeInSecs--;
+    let m = Math.floor(timeInSecs / 60);
+    let s = timeInSecs % 60;
+    let display = document.getElementById('im-time-display');
+    if(display) display.innerText = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+}, 1000);
+
 
 function validateWA(phoneStr) {
     let cleanPhone = phoneStr.replace(/[^0-9+]/g, '');
@@ -275,7 +301,7 @@ let sessionLeadId = 'LD_' + Date.now() + '_' + Math.random().toString(36).substr
 (function() {
     const sheetUrl = 'https://script.google.com/macros/s/AKfycbzJtkwRKHXq5YH_S4tspuzz5B3N_FdOKy1bT6Ovqcqn8m9tPQufedB6M85fzW1jMOpZ/exec';
     if(sheetUrl && sheetUrl.startsWith('http')) {
-        fetch(sheetUrl + "?action=track_view&form_name=" + encodeURIComponent('Reservasi Jadwal Layanan'), {
+        fetch(sheetUrl + "?action=track_view&form_name=" + encodeURIComponent('Konsultasi Gratis 30 Menit'), {
             method: 'GET',
             mode: 'no-cors'
         });
@@ -302,7 +328,7 @@ formElCap.addEventListener('input', function(e) {
             
             let jsonData = {
                 Waktu_Order: new Date().toLocaleString(),
-                Nama_Form: 'Reservasi Jadwal Layanan',
+                Nama_Form: 'Konsultasi Gratis 30 Menit',
                 wa_target: '',
                 Status_Pesanan: 'UNFINISHED',
                 Lead_ID: sessionLeadId
@@ -354,7 +380,7 @@ document.getElementById('im-form').addEventListener('submit', function(e) {
     
     let jsonData = { 
         Waktu_Order: new Date().toLocaleString(), 
-        Nama_Form: 'Reservasi Jadwal Layanan', 
+        Nama_Form: 'Konsultasi Gratis 30 Menit', 
         wa_target: '',
         Status_Pesanan: 'SUBMITTED',
         Lead_ID: sessionLeadId
