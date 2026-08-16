@@ -43,6 +43,7 @@
                     animation: {
                         'float': 'float 6s ease-in-out infinite',
                         'float-delayed': 'float 6s ease-in-out infinite 2s',
+                        'float-alt': 'float 7s ease-in-out infinite 3.5s',
                     },
                     keyframes: {
                         float: {
@@ -85,7 +86,7 @@
                 </div>
             </a>
 
-            <!-- Nav Links (Marketing & Affiliate Removed) -->
+            <!-- Nav Links (Marketing & Affiliate Removed as requested) -->
             <nav class="hidden md:flex items-center gap-8 text-sage-dark text-xs font-bold">
                 <a href="#fitur" class="hover:text-gold transition-colors">Fitur</a>
                 <a href="#website" class="hover:text-gold transition-colors">Website</a>
@@ -152,7 +153,7 @@
                             <div class="w-2.5 h-2.5 rounded-full bg-[#27C93F] border border-[#1AAB29]/30"></div>
                         </div>
                         
-                        <!-- Gambar dari lo -->
+                        <!-- Dashboard Image -->
                         <img 
                             src="https://imersnesia.com/wp-content/uploads/2026/08/onemmebrdashbarod.jpg" 
                             alt="OneMember Dashboard Interface" 
@@ -160,7 +161,7 @@
                         >
                     </div>
 
-                    <!-- Floating Widget (Total Pendapatan) -->
+                    <!-- Floating Widget (Total Pendapatan) - Kiri Bawah -->
                     <div class="absolute -bottom-6 -left-4 sm:-left-8 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-4 animate-float-delayed z-20">
                         <div class="w-10 h-10 rounded-full bg-sage-100/30 text-sage-dark flex items-center justify-center font-black">
                             Rp
@@ -168,6 +169,20 @@
                         <div>
                             <div class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Total Pendapatan</div>
                             <div class="text-base sm:text-lg font-bold text-sage-deep">Rp 125.400.000</div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Widget (Affiliate Link) - Kanan Atas -->
+                    <div class="absolute -top-6 -right-4 sm:-right-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-4 animate-float-alt z-20">
+                        <div class="w-10 h-10 rounded-full bg-gold/15 text-gold flex items-center justify-center">
+                            <!-- SVG Chain Link Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                            </svg>
+                        </div>
+                        <div class="pr-2">
+                            <div class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Sistem Internal</div>
+                            <div class="text-base sm:text-lg font-bold text-sage-deep">Affiliate Link</div>
                         </div>
                     </div>
                 </div>
