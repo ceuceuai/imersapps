@@ -1,395 +1,442 @@
-
-
-<style>
-.im-wrapper { 
-    font-family: 'Inter', sans-serif; 
-    background: #fff; 
-    border-radius: 24px; 
-    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); 
-    overflow: hidden; 
-    max-width: 450px; 
-    margin: 0 auto; 
-    border: 1px solid #e2e8f0; 
-    width: 100%; 
-    box-sizing: border-box; 
-} 
-.im-header { 
-    padding: 24px; 
-    text-align: center; 
-    color: white; 
-    transition: background 0.3s ease; 
-} 
-.im-logo { 
-    max-height: 48px; 
-    margin: 0 auto 12px auto; 
-    display: block; 
-    object-fit: contain; 
-} 
-.im-title { 
-    margin: 0; 
-    font-size: 20px; 
-    font-weight: 700; 
-    line-height: 1.3; 
-} 
-.im-body { 
-    padding: 24px; 
-} 
-.im-group { 
-    margin-bottom: 16px; 
-} 
-.im-label { 
-    display: block; 
-    font-size: 13px; 
-    font-weight: 700; 
-    color: #475569; 
-    margin-bottom: 6px; 
-} 
-.im-input { 
-    width: 100%; 
-    padding: 12px 16px; 
-    background: #f8fafc; 
-    border: 1px solid #cbd5e1; 
-    border-radius: 12px; 
-    font-size: 14px; 
-    box-sizing: border-box; 
-    transition: all 0.2s; 
-    color: #0f172a; 
-} 
-.im-input:focus { 
-    outline: none; 
-    border-color: #60a5fa; 
-    box-shadow: 0 0 0 3px rgba(96, 165, 250,0.1); 
-    background: #fff; 
-} 
-.im-radio-group, .im-checkbox-group { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 8px; 
-    margin-top: 8px; 
-} 
-.im-radio-label, .im-checkbox-label { 
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
-    font-size: 14px; 
-    color: #334155; 
-    cursor: pointer; 
-    padding: 8px 12px; 
-    background: #f8fafc; 
-    border: 1px solid #e2e8f0; 
-    border-radius: 10px; 
-    transition: background 0.2s; 
-} 
-.im-radio-label:hover, .im-checkbox-label:hover { 
-    background: #f1f5f9; 
-} 
-.im-radio-label input, .im-checkbox-label input { 
-    accent-color: #60a5fa; 
-    width: 16px; 
-    height: 16px; 
-    cursor: pointer; 
-} 
-.im-footer { 
-    margin-top: 24px; 
-} 
-.im-total-box { 
-    display: none; 
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 16px; 
-    background: #f8fafc; 
-    border: 2px dashed #cbd5e1; 
-    border-radius: 12px; 
-    margin-bottom: 16px; 
-} 
-.im-total-label { 
-    font-size: 13px; 
-    font-weight: 700; 
-    color: #475569; 
-} 
-.im-total-value { 
-    font-size: 18px; 
-    font-weight: 800; 
-    color: #60a5fa; 
-} 
-.im-trust { 
-    display: flex; 
-    gap: 12px; 
-    padding: 12px 16px; 
-    background: rgba(96, 165, 250, 0.08); 
-    border: 1px solid rgba(96, 165, 250, 0.2); 
-    border-radius: 12px; 
-    margin-bottom: 16px; 
-    align-items: flex-start; 
-} 
-.im-trust-title { 
-    font-size: 13px; 
-    font-weight: 700; 
-    color: #60a5fa; 
-    line-height: 1.2; 
-} 
-.im-trust-desc { 
-    font-size: 11px; 
-    color: #64748b; 
-    margin-top: 4px; 
-    line-height: 1.4; 
-} 
-.im-btn { 
-    width: 100%; 
-    padding: 14px; 
-    border: none; 
-    border-radius: 12px; 
-    color: white; 
-    font-weight: 700; 
-    font-size: 15px; 
-    cursor: pointer; 
-    transition: all 0.2s; 
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); 
-} 
-.im-btn:hover { 
-    transform: translateY(-2px); 
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
-}
-.im-timer-wrap { text-align: center; margin-bottom: 12px; }
-.im-timer { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700; font-size: 14px; color: #60a5fa; background: rgba(96, 165, 250, 0.1); padding: 8px 16px; border-radius: 99px; }
-.im-error-modal { position: fixed; inset: 0; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); z-index: 999999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 16px; }
-.im-error-modal.im-show { opacity: 1; pointer-events: auto; }
-.im-error-box { background: white; padding: 24px; border-radius: 20px; text-align: center; max-width: 320px; width: 100%; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-.im-error-modal.im-show .im-error-box { transform: scale(1); }
-.im-error-icon { width: 56px; height: 56px; background: #fee2e2; color: #e11d48; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-.im-error-title { font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 8px; line-height: 1.2; }
-.im-error-desc { font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 24px; }
-.im-error-btn { width: 100%; padding: 12px; background: #e11d48; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; transition: background 0.2s; font-size: 14px;}
-.im-error-btn:hover { background: #be123c; }
-
-</style>
-
-<div class="im-wrapper">
-    <div class="im-header" style="background: linear-gradient(135deg, #0ea5e9, #1e3a8a)">
-        <img src="undefined" class="im-logo" alt="Logo">
-
-        <h2 class="im-title" style="color: #ffffff;">Konsultasi Gratis 30 Menit</h2>
-
-    </div>
-    <form id="im-form" class="im-body" onsubmit="return false;">
-        <div class="im-group">
-    <label class="im-label">Nama Lengkap <span style="color:#e11d48">*</span></label>
-    <input type="text" name="Nama Lengkap" class="im-input" placeholder="Sesuai KTP/Panggilan" required>
-</div>
-<div class="im-group">
-    <label class="im-label">No. WhatsApp <span style="color:#e11d48">*</span></label>
-    <input type="tel" name="No. WhatsApp" class="im-input" placeholder="" required>
-</div>
-
-        <div class="im-footer">
-            
-                <div id="im-total-box" class="im-total-box">
-                    <span class="im-total-label">Total Tagihan:</span>
-                    <span id="im-total-value" class="im-total-value">Rp 0</span>
-                </div>
-            
-            
-                <div class="im-trust">
-                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" style="color:#60a5fa; flex-shrink:0">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                        <polyline points="9 12 11 14 15 10"></polyline>
-                    </svg>
-                    <div>
-                        <div class="im-trust-title">Aman & Terpercaya</div>
-                        <div class="im-trust-desc">Semua data dan cerita bisnis Anda aman bersama kami.</div>
-                    </div>
-                </div>
-            
-            
-                <div class="im-timer-wrap">
-                    <div class="im-timer">
-                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                        <span id="im-time-display">15:00</span>
-                    </div>
-                </div>
-            
-            <button id="im-submit-btn" type="submit" class="im-btn" style="background: linear-gradient(135deg, #60a5fa, #2563eb)"><span style="color: #ffffff;">💬 Booking Konsultasi</span></button>
-        </div>
-    </form>
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneMember — Platform Bisnis Digital White-Label</title>
+    <meta name="description" content="OneMember adalah source code platform bisnis digital berbasis PHP & MySQL untuk menjual dan mengelola berbagai produk digital tanpa ketergantungan biaya langganan SaaS bulanan.">
     
-            <div id="im-error-modal" class="im-error-modal">
-                <div class="im-error-box">
-                    <div class="im-error-icon">
-                        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+    <link rel="icon" href="https://imersnesia.com/wp-content/uploads/2026/08/icononemmeber_convertfast.webp">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        sage: {
+                            100: '#A8BDAE',
+                            200: '#8FAE9A',
+                            300: '#6F8F7B',
+                            dark: '#526B5B',
+                            deep: '#34483B'
+                        },
+                        gold: {
+                            soft: '#F1E5C8',
+                            light: '#E6D3A3',
+                            DEFAULT: '#C9A45C'
+                        },
+                        ivory: '#FCFBF7',
+                        cream: '#F7F5EF'
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out infinite 2s',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FCFBF7;
+            background-image: 
+                radial-gradient(circle at 8% 7%, rgba(143,174,154,.15), transparent 30%),
+                radial-gradient(circle at 92% 18%, rgba(201,164,92,.08), transparent 28%);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #A8BDAE; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6F8F7B; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased overflow-x-hidden selection:bg-gold selection:text-white">
+
+    <!-- NAVBAR -->
+    <header id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 py-4 border-b border-transparent">
+        <div class="max-w-[1180px] mx-auto px-5 w-full flex items-center justify-between">
+            
+            <!-- Brand -->
+            <a href="https://imersnesia.com" class="flex items-center gap-3 group">
+                <img src="https://imersnesia.com/wp-content/uploads/2026/08/icononemmeber_convertfast.webp" alt="OneMember" class="w-11 h-11 object-contain transition-transform group-hover:scale-105">
+                <div class="hidden sm:block">
+                    <strong class="block font-montserrat text-sage-deep text-lg leading-none">OneMember</strong>
+                    <small class="block text-slate-500 text-[8px] tracking-[1.5px] mt-1 font-bold">DIGITAL BUSINESS PLATFORM</small>
+                </div>
+            </a>
+
+            <!-- Nav Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sage-dark text-xs font-bold">
+                <a href="#fitur" class="hover:text-gold transition-colors">Fitur</a>
+                <a href="#website" class="hover:text-gold transition-colors">Website</a>
+                <a href="#marketing" class="hover:text-gold transition-colors">Marketing</a>
+                <a href="#affiliate" class="hover:text-gold transition-colors">Affiliate</a>
+                <a href="#harga" class="hover:text-gold transition-colors">Harga</a>
+            </nav>
+
+            <!-- Nav CTA -->
+            <a href="#harga" class="inline-flex items-center justify-center px-5 py-3 rounded-xl text-white bg-sage-deep text-[11px] font-extrabold shadow-[0_12px_26px_rgba(52,72,59,.16)] hover:-translate-y-0.5 transition-transform">
+                Dapatkan OneMember
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section class="relative min-h-[95vh] pt-36 pb-20 flex items-center overflow-hidden">
+            <!-- Decorative background blurs -->
+            <div class="absolute top-20 -left-40 w-[420px] h-[420px] bg-sage-200/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute top-10 -right-20 w-[360px] h-[360px] bg-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="max-w-[1180px] mx-auto px-5 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+                
+                <!-- Hero Copy -->
+                <div class="text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold/10 border border-gold/20 text-gold text-[9px] font-extrabold tracking-widest mb-6">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gold shadow-[0_0_0_4px_rgba(201,164,92,.12)]"></span>
+                        ONEMEMBER · FULL SOURCE CODE
                     </div>
-                    <div class="im-error-title">Terjadi Kesalahan</div>
-                    <div class="im-error-desc" id="im-error-desc">Nomor WhatsApp tidak valid. Silakan periksa kembali dan pastikan nomor sudah benar.</div>
-                    <button type="button" class="im-error-btn" onclick="document.getElementById('im-error-modal').classList.remove('im-show')">Mengerti</button>
+
+                    <h1 class="font-montserrat text-[2.75rem] md:text-6xl lg:text-[4.2rem] leading-[1.1] font-extrabold tracking-tight text-slate-800 mb-6">
+                        Miliki Platform Digital
+                        <span class="text-sage-dark block mt-2">Anda Sendiri.</span>
+                        <span class="text-gold text-[0.75em] block mt-2">Jual & Kembangkan Tanpa Batas.</span>
+                    </h1>
+
+                    <p class="text-slate-500 text-sm md:text-base leading-relaxed max-w-lg mx-auto lg:mx-0 mb-8">
+                        <strong class="text-sage-deep font-bold">OneMember</strong> adalah source code platform bisnis digital berbasis
+                        <strong class="text-sage-deep font-bold">PHP & MySQL</strong> untuk menjual berbagai produk digital tanpa ketergantungan biaya langganan SaaS bulanan.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-8">
+                        <a href="#harga" class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-4 rounded-xl font-heading text-xs font-bold text-white bg-sage-deep shadow-[0_15px_30px_rgba(52,72,59,.20)] hover:-translate-y-1 transition-all">Lihat Paket Lisensi</a>
+                        <a href="#fitur" class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-4 rounded-xl font-heading text-xs font-bold text-sage-deep bg-white border border-sage-deep/15 hover:-translate-y-1 transition-all">Jelajahi Fitur</a>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-[11px] font-bold text-slate-500">
+                        <div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-sage-100 text-white flex items-center justify-center text-[10px]">✓</span> PHP 7.4+</div>
+                        <div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-sage-100 text-white flex items-center justify-center text-[10px]">✓</span> MySQL / MariaDB</div>
+                        <div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-sage-100 text-white flex items-center justify-center text-[10px]">✓</span> White-Label</div>
+                    </div>
+                </div>
+
+                <!-- Hero Image (Dashboard Mac Mockup) -->
+                <div class="relative w-full max-w-xl mx-auto lg:ml-auto perspective-1000">
+                    <!-- Glow effect behind -->
+                    <div class="absolute inset-0 bg-gradient-to-tr from-sage-200/40 to-gold/20 rounded-2xl blur-2xl transform rotate-3 scale-105"></div>
+                    
+                    <!-- Dashboard Mac Window -->
+                    <div class="relative rounded-xl overflow-hidden shadow-2xl border border-white/60 bg-white/50 backdrop-blur-sm animate-float">
+                        <!-- Mac-like top bar -->
+                        <div class="h-7 bg-white border-b border-slate-100 flex items-center px-4 gap-1.5">
+                            <div class="w-2.5 h-2.5 rounded-full bg-[#FF5F56] border border-[#E0443E]/30"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-[#FFBD2E] border border-[#DEA123]/30"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-[#27C93F] border border-[#1AAB29]/30"></div>
+                        </div>
+                        
+                        <!-- 
+                          👇 GANTI LINK PLACEHOLDER DI BAWAH DENGAN URL GAMBAR DASHBOARD LO 👇 
+                        -->
+                        <img 
+                            src="https://imersnesia.com/wp-content/uploads/2026/08/onemmebrdashbarod.jpg" 
+                            alt="OneMember Dashboard Interface" 
+                            class="w-full h-auto object-cover border-none"
+                        >
+                    </div>
+
+                    <!-- Floating Widget (Total Pendapatan) -->
+                    <div class="absolute -bottom-6 -left-4 sm:-left-8 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-4 animate-float-delayed z-20">
+                        <div class="w-10 h-10 rounded-full bg-sage-100/30 text-sage-dark flex items-center justify-center font-black">
+                            $
+                        </div>
+                        <div>
+                            <div class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Total Pendapatan</div>
+                            <div class="text-base sm:text-lg font-bold text-sage-deep">Rp 125.400.000</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- WHAT IS ONEMEMBER (Dark Section) -->
+        <section class="relative py-24 bg-gradient-to-br from-sage-deep to-sage-dark text-white overflow-hidden">
+            <!-- Decorative orbs -->
+            <div class="absolute top-10 right-10 w-64 h-64 bg-sage-300/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute bottom-10 left-10 w-64 h-64 bg-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="max-w-[1180px] mx-auto px-5 relative z-10">
+                
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <div class="text-gold-light text-[9px] font-extrabold tracking-[2px] mb-4">ONE SYSTEM · MANY BUSINESS MODELS</div>
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold leading-tight mb-4 tracking-tight">Satu Platform untuk Banyak Model Bisnis.</h2>
+                    <p class="text-white/70 text-sm leading-relaxed">
+                        OneMember tidak membatasi Anda hanya pada e-course. Bangun commerce, akses digital, affiliate, dan ekosistem produk sesuai model bisnis Anda.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:-translate-y-1 hover:bg-white/10 transition-all">
+                        <strong class="block font-heading text-sm mb-2">01 · E-Course</strong>
+                        <span class="text-white/60 text-xs leading-relaxed">Modul, materi, progress belajar, drip content, sertifikat dan area belajar member.</span>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:-translate-y-1 hover:bg-white/10 transition-all">
+                        <strong class="block font-heading text-sm mb-2">02 · Digital Download</strong>
+                        <span class="text-white/60 text-xs leading-relaxed">File digital terproteksi, versi file, batas unduhan dan download manager.</span>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:-translate-y-1 hover:bg-white/10 transition-all">
+                        <strong class="block font-heading text-sm mb-2">03 · HTML App</strong>
+                        <span class="text-white/60 text-xs leading-relaxed">Jual mini app, calculator, quiz, dashboard, worksheet atau tools HTML interaktif.</span>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:-translate-y-1 hover:bg-white/10 transition-all">
+                        <strong class="block font-heading text-sm mb-2">04 · Membership</strong>
+                        <span class="text-white/60 text-xs leading-relaxed">Kelola akses member, masa berlaku, level, lisensi, produk dan histori transaksi.</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CORE FEATURES (Bento Grid) -->
+        <section class="py-24 bg-ivory" id="fitur">
+            <div class="max-w-[1180px] mx-auto px-5">
+                
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <div class="text-gold text-[9px] font-extrabold tracking-[2px] mb-4">CORE FEATURES</div>
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold leading-tight mb-4 text-sage-deep tracking-tight">Lebih dari Membership. Ini Fondasi Platform Anda.</h2>
+                    <p class="text-slate-500 text-sm leading-relaxed">OneMember dirancang untuk menjual, mengelola, memberikan akses, membangun affiliate, menjalankan automation dari satu sistem.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    
+                    <!-- Box 1 -->
+                    <div class="p-8 rounded-3xl bg-white border border-sage-deep/5 shadow-[0_16px_40px_rgba(52,72,59,.03)] hover:shadow-[0_20px_50px_rgba(52,72,59,.08)] transition-all">
+                        <h3 class="font-heading text-xl font-bold text-sage-deep mb-6">Commerce, Produk & Akses</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-cream border border-sage-deep/5"><span class="text-sage-dark font-black">✓</span> Produk Digital Commerce</div>
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-cream border border-sage-deep/5"><span class="text-sage-dark font-black">✓</span> E-Course & Membership</div>
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-cream border border-sage-deep/5"><span class="text-sage-dark font-black">✓</span> HTML App / Web Access</div>
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-cream border border-sage-deep/5"><span class="text-sage-dark font-black">✓</span> Digital Download</div>
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-cream border border-sage-deep/5"><span class="text-sage-dark font-black">✓</span> Software License Manager</div>
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-cream border border-sage-deep/5"><span class="text-sage-dark font-black">✓</span> Sertifikat Generator</div>
+                        </div>
+                    </div>
+
+                    <!-- Box 2 -->
+                    <div class="p-8 rounded-3xl bg-gradient-to-br from-gold/5 to-white border border-gold/20 shadow-[0_16px_40px_rgba(201,164,92,.05)] hover:shadow-[0_20px_50px_rgba(201,164,92,.12)] transition-all">
+                        <h3 class="font-heading text-xl font-bold text-sage-deep mb-6">Member Experience & Reward</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-white border border-gold/10"><span class="text-gold font-black">✓</span> Point Reward System</div>
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-white border border-gold/10"><span class="text-gold font-black">✓</span> Member Area Messages</div>
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-white border border-gold/10"><span class="text-gold font-black">✓</span> Popup Promo & Announcement</div>
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-white border border-gold/10"><span class="text-gold font-black">✓</span> Dynamic Login Builder</div>
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-white border border-gold/10"><span class="text-gold font-black">✓</span> White Label Branding</div>
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-white border border-gold/10"><span class="text-gold font-black">✓</span> Activity Log & Roles</div>
+                        </div>
+                    </div>
+
+                    <!-- Box 3 -->
+                    <div class="p-8 rounded-3xl bg-gradient-to-br from-gold/5 to-white border border-gold/20 shadow-[0_16px_40px_rgba(201,164,92,.05)] hover:shadow-[0_20px_50px_rgba(201,164,92,.12)] transition-all">
+                        <h3 class="font-heading text-xl font-bold text-sage-deep mb-6">Affiliate & Growth Engine</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-white border border-gold/10"><span class="text-gold font-black">✓</span> Generate Link per Produk</div>
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-white border border-gold/10"><span class="text-gold font-black">✓</span> Database Affiliate Terisolasi</div>
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-white border border-gold/10"><span class="text-gold font-black">✓</span> Dashboard & Statistik</div>
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-white border border-gold/10"><span class="text-gold font-black">✓</span> Tracking Pixel Affiliate</div>
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-white border border-gold/10"><span class="text-gold font-black">✓</span> Email & WA Sequence</div>
+                            <div class="flex items-start gap-2.5 text-xs text-slate-600 p-3 rounded-xl bg-white border border-gold/10"><span class="text-gold font-black">✓</span> Checkout Recovery</div>
+                        </div>
+                    </div>
+
+                    <!-- Box 4 -->
+                    <div class="p-8 rounded-3xl bg-white border border-sage-deep/5 shadow-[0_16px_40px_rgba(52,72,59,.03)] hover:shadow-[0_20px_50px_rgba(52,72,59,.08)] transition-all flex flex-col justify-center">
+                        <h3 class="font-heading text-xl font-bold text-sage-deep mb-6">Hosting & Teknologi</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-4 py-2 rounded-full bg-sage-deep text-white text-[10px] font-bold shadow-sm">PHP 7.4+</span>
+                            <span class="px-4 py-2 rounded-full bg-sage-deep text-white text-[10px] font-bold shadow-sm">MySQL / MariaDB</span>
+                            <span class="px-4 py-2 rounded-full bg-sage-deep text-white text-[10px] font-bold shadow-sm">cPanel Friendly</span>
+                            <span class="px-4 py-2 rounded-full bg-sage-deep text-white text-[10px] font-bold shadow-sm">Full Source Code</span>
+                            <span class="px-4 py-2 rounded-full bg-sage-deep text-white text-[10px] font-bold shadow-sm">White-Label Ready</span>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-            
-</div>
+        </section>
 
+        <!-- WEBSITE & SEO -->
+        <section class="py-24 bg-gradient-to-b from-cream to-white border-y border-sage-100/30" id="website">
+            <div class="max-w-[1180px] mx-auto px-5">
+                
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <div class="text-gold text-[9px] font-extrabold tracking-[2px] mb-4">WEBSITE & SEO</div>
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold leading-tight mb-4 text-sage-deep tracking-tight">Bukan Cuma Dashboard. Website Publiknya Juga Hidup.</h2>
+                    <p class="text-slate-500 text-sm leading-relaxed">Bangun homepage, katalog, sales page dan artikel tanpa perlu membuat website terpisah.</p>
+                </div>
 
-<script>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="p-8 rounded-3xl bg-gradient-to-br from-gold/10 to-white border border-gold/20">
+                        <h3 class="font-heading text-xl font-bold text-sage-deep mb-3">Dynamic Homepage</h3>
+                        <p class="text-slate-500 text-xs leading-relaxed mb-6">Homepage dapat diaktifkan atau dimatikan dan hampir seluruh tampilannya dapat diatur dari admin.</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-3 text-xs text-slate-600"><span class="w-5 h-5 rounded-full bg-sage-100/30 text-sage-dark flex items-center justify-center font-black">✓</span> Hero, navbar, promo bar dan CTA</li>
+                            <li class="flex items-center gap-3 text-xs text-slate-600"><span class="w-5 h-5 rounded-full bg-sage-100/30 text-sage-dark flex items-center justify-center font-black">✓</span> Katalog dengan search, filter dan sorting</li>
+                            <li class="flex items-center gap-3 text-xs text-slate-600"><span class="w-5 h-5 rounded-full bg-sage-100/30 text-sage-dark flex items-center justify-center font-black">✓</span> FAQ, benefit dan section dinamis</li>
+                        </ul>
+                    </div>
 
-function calculateTotal() { 
-    let currentPrice = 0; 
-    let qty = 1; 
-    
-    const formEl = document.getElementById('im-form');
-    if (!formEl) return 0;
-    
-    const fd = new FormData(formEl); 
-    
-    for (let [key, value] of fd.entries()) { 
-        if(typeof value === 'string') { 
-            const match = value.match(/=\s*(\d+)/); 
-            if (match) {
-                currentPrice = parseInt(match[1]); 
+                    <div class="p-8 rounded-3xl bg-white border border-sage-100/50 shadow-sm">
+                        <h3 class="font-heading text-xl font-bold text-sage-deep mb-3">Artikel & Blog SEO</h3>
+                        <p class="text-slate-500 text-xs leading-relaxed mb-6">Isi website dengan konten yang relevan agar brand lebih hidup dan punya fondasi SEO yang kuat.</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-3 text-xs text-slate-600"><span class="w-5 h-5 rounded-full bg-sage-100/30 text-sage-dark flex items-center justify-center font-black">✓</span> Rich text editor Quill.js & Kategori</li>
+                            <li class="flex items-center gap-3 text-xs text-slate-600"><span class="w-5 h-5 rounded-full bg-sage-100/30 text-sage-dark flex items-center justify-center font-black">✓</span> SEO title, meta description & Canonical URL</li>
+                            <li class="flex items-center gap-3 text-xs text-slate-600"><span class="w-5 h-5 rounded-full bg-sage-100/30 text-sage-dark flex items-center justify-center font-black">✓</span> Draft, Published dan Scheduled posts</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PRICING -->
+        <section class="py-24 bg-ivory" id="harga">
+            <div class="max-w-[1180px] mx-auto px-5">
+                
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <div class="text-gold text-[9px] font-extrabold tracking-[2px] mb-4">LICENSE OPTIONS</div>
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold leading-tight mb-4 text-sage-deep tracking-tight">Pilih Paket Lisensi OneMember.</h2>
+                    <p class="text-slate-500 text-sm leading-relaxed">Fitur aplikasinya tetap lengkap. Yang berbeda adalah jumlah lisensi instalasi.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+                    
+                    <!-- Basic Plan -->
+                    <div class="flex flex-col p-8 rounded-[2rem] bg-white border border-sage-100 shadow-[0_20px_55px_rgba(52,72,59,.04)] mt-4 md:mt-8">
+                        <div class="font-heading text-xl font-bold text-sage-deep">Personal</div>
+                        <div class="text-slate-400 text-xs mt-1">1 Lisensi Instalasi</div>
+                        <div class="my-6">
+                            <span class="font-montserrat text-4xl font-extrabold text-sage-deep tracking-tight">Rp49.000</span>
+                        </div>
+                        <ul class="space-y-4 flex-1 mb-8">
+                            <li class="flex items-start gap-3 text-xs text-slate-600"><span class="text-sage-dark font-black">✓</span> 1 lisensi instalasi</li>
+                            <li class="flex items-start gap-3 text-xs text-slate-600"><span class="text-sage-dark font-black">✓</span> Full source code OneMember</li>
+                            <li class="flex items-start gap-3 text-xs text-slate-600"><span class="text-sage-dark font-black">✓</span> Seluruh fitur utama</li>
+                            <li class="flex items-start gap-3 text-xs text-slate-600"><span class="text-sage-dark font-black">✓</span> White-label branding</li>
+                        </ul>
+                        <!-- Ganti Href dengan Link Checkout lo -->
+                        <a href="#" class="block text-center w-full py-4 rounded-xl font-heading text-xs font-bold text-sage-deep bg-white border border-sage-deep/15 hover:bg-slate-50 transition-colors">Pilih Personal</a>
+                    </div>
+
+                    <!-- Popular Plan -->
+                    <div class="relative flex flex-col p-8 rounded-[2rem] bg-gradient-to-b from-[#fffdf7] to-[#f7f2e7] border border-gold/40 shadow-[0_25px_70px_rgba(201,164,92,.16)] transform md:-translate-y-4">
+                        <div class="absolute top-0 right-8 -translate-y-1/2 bg-gold text-white text-[9px] font-black tracking-widest py-1.5 px-4 rounded-full shadow-lg">PALING FAVORIT</div>
+                        <div class="font-heading text-2xl font-bold text-sage-deep">Agency Starter</div>
+                        <div class="text-slate-500 text-xs mt-1">20 Lisensi</div>
+                        <div class="mt-6 mb-2">
+                            <span class="font-montserrat text-[2.75rem] font-extrabold text-sage-deep tracking-tight leading-none">Rp149.000</span>
+                        </div>
+                        <div class="text-gold font-extrabold text-[10px] mb-6">BONUS 5 LISENSI · TOTAL 25</div>
+                        <ul class="space-y-4 flex-1 mb-8">
+                            <li class="flex items-start gap-3 text-xs text-slate-700 font-medium"><span class="w-4 h-4 rounded-full bg-gold/20 text-gold flex items-center justify-center font-black text-[9px]">✓</span> 25 total lisensi instalasi</li>
+                            <li class="flex items-start gap-3 text-xs text-slate-700"><span class="w-4 h-4 rounded-full bg-gold/20 text-gold flex items-center justify-center font-black text-[9px]">✓</span> Full source code OneMember</li>
+                            <li class="flex items-start gap-3 text-xs text-slate-700"><span class="w-4 h-4 rounded-full bg-gold/20 text-gold flex items-center justify-center font-black text-[9px]">✓</span> Seluruh fitur utama</li>
+                            <li class="flex items-start gap-3 text-xs text-slate-700"><span class="w-4 h-4 rounded-full bg-gold/20 text-gold flex items-center justify-center font-black text-[9px]">✓</span> Cocok untuk agency pemula</li>
+                        </ul>
+                        <!-- Ganti Href dengan Link Checkout lo -->
+                        <a href="#" class="block text-center w-full py-4 rounded-xl font-heading text-xs font-bold text-white bg-gold shadow-[0_15px_30px_rgba(201,164,92,.25)] hover:shadow-[0_20px_40px_rgba(201,164,92,.35)] hover:-translate-y-1 transition-all">Ambil Agency Starter</a>
+                    </div>
+
+                    <!-- Premium Plan -->
+                    <div class="flex flex-col p-8 rounded-[2rem] bg-white border border-sage-100 shadow-[0_20px_55px_rgba(52,72,59,.04)] mt-4 md:mt-8">
+                        <div class="font-heading text-xl font-bold text-sage-deep">Agency Premium</div>
+                        <div class="text-slate-400 text-xs mt-1">100 Lisensi</div>
+                        <div class="mt-6 mb-2">
+                            <span class="font-montserrat text-4xl font-extrabold text-sage-deep tracking-tight">Rp399.000</span>
+                        </div>
+                        <div class="text-gold font-extrabold text-[10px] mb-6">BONUS 10 LISENSI · TOTAL 110</div>
+                        <ul class="space-y-4 flex-1 mb-8">
+                            <li class="flex items-start gap-3 text-xs text-slate-600"><span class="text-sage-dark font-black">✓</span> 110 total lisensi instalasi</li>
+                            <li class="flex items-start gap-3 text-xs text-slate-600"><span class="text-sage-dark font-black">✓</span> Full source code OneMember</li>
+                            <li class="flex items-start gap-3 text-xs text-slate-600"><span class="text-sage-dark font-black">✓</span> Seluruh fitur utama</li>
+                            <li class="flex items-start gap-3 text-xs text-slate-600"><span class="text-sage-dark font-black">✓</span> Biaya per lisensi paling ekonomis</li>
+                        </ul>
+                        <!-- Ganti Href dengan Link Checkout lo -->
+                        <a href="#" class="block text-center w-full py-4 rounded-xl font-heading text-xs font-bold text-sage-deep bg-white border border-sage-deep/15 hover:bg-slate-50 transition-colors">Pilih Agency Premium</a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA SECTION -->
+        <section class="py-24 bg-ivory">
+            <div class="max-w-[1180px] mx-auto px-5">
+                <div class="p-12 md:p-20 rounded-[2.5rem] text-center text-white bg-gradient-to-br from-sage-deep to-sage-dark relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <h2 class="font-heading text-3xl md:text-5xl font-bold leading-tight mb-6 tracking-tight relative z-10">
+                        Bangun Platform Digital <br> <span class="text-gold-light">Milik Anda Sendiri.</span>
+                    </h2>
+                    <p class="text-white/70 text-sm leading-relaxed max-w-2xl mx-auto mb-10 relative z-10">
+                        OneMember menyatukan commerce produk digital, membership, e-course, lisensi, website publik, affiliate, dan marketing dalam satu source code.
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
+                        <a href="#harga" class="w-full sm:w-auto px-8 py-4 rounded-xl font-heading text-xs font-bold text-white bg-gold shadow-xl hover:-translate-y-1 transition-transform">Lihat Paket Lisensi</a>
+                        <a href="https://wa.me/628xxxxxxxxxx" class="w-full sm:w-auto px-8 py-4 rounded-xl font-heading text-xs font-bold text-white bg-white/10 border border-white/20 hover:bg-white/20 transition-colors">Tanya via WhatsApp</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-8 border-t border-sage-deep/10 bg-white">
+        <div class="max-w-[1180px] mx-auto px-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="https://imersnesia.com" class="flex items-center gap-2">
+                <img src="https://imersnesia.com/wp-content/uploads/2026/08/icononemmeber_convertfast.webp" alt="OneMember" class="w-8 h-8 object-contain">
+                <strong class="font-montserrat text-sage-deep text-sm">OneMember</strong>
+            </a>
+            <p class="text-slate-400 text-[10px]">
+                OneMember · A Digital Product by iMersnesia &copy; 2026
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Sticky Navbar Effect with Glassmorphism
+        const navbar = document.getElementById("navbar");
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 30) {
+                navbar.classList.add("bg-white/80", "backdrop-blur-md", "shadow-sm", "!border-sage-100/50");
+                navbar.classList.remove("py-4", "border-transparent");
+                navbar.classList.add("py-3");
+            } else {
+                navbar.classList.remove("bg-white/80", "backdrop-blur-md", "shadow-sm", "!border-sage-100/50", "py-3");
+                navbar.classList.add("py-4", "border-transparent");
             }
-        } 
-    } 
-    
-    const numInputs = formEl.querySelectorAll('input[type="number"]'); 
-    
-    if (numInputs.length > 0) { 
-        let parsedQty = parseInt(numInputs[0].value); 
-        qty = (!isNaN(parsedQty) && parsedQty > 0) ? parsedQty : 0; 
-    } 
-    
-    let total = currentPrice * qty; 
-    
-    const totalBox = document.getElementById('im-total-box'); 
-    const totalVal = document.getElementById('im-total-value'); 
-    
-    if (totalBox && totalVal) {
-        if (currentPrice > 0) { 
-            totalBox.style.display = 'flex'; 
-            totalVal.innerText = 'Rp ' + new Intl.NumberFormat('id-ID').format(total); 
-        } else { 
-            totalBox.style.display = 'none'; 
-        } 
-    }
-    
-    return total; 
-} 
-
-document.getElementById('im-form').addEventListener('input', calculateTotal); 
-document.getElementById('im-form').addEventListener('change', calculateTotal); 
-calculateTotal();
-
-
-let timeInSecs = 15 * 60;
-let timerInterval = setInterval(() => {
-    if(timeInSecs <= 0) { clearInterval(timerInterval); return; }
-    timeInSecs--;
-    let m = Math.floor(timeInSecs / 60);
-    let s = timeInSecs % 60;
-    let display = document.getElementById('im-time-display');
-    if(display) display.innerText = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
-}, 1000);
-
-
-function validateWA(phoneStr) {
-    let cleanPhone = phoneStr.replace(/[^0-9+]/g, '');
-    if(cleanPhone.length < parseInt('10')) return false;
-    const prefixes = "08, 62, +62".split(',').map(p => p.trim()).filter(p => p);
-    for(let p of prefixes) {
-        if(cleanPhone.startsWith(p)) return true;
-    }
-    return false;
-}
-
-
-let sessionLeadId = 'LD_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
-
-// Track Form View on Load
-(function() {
-    const sheetUrl = 'https://script.google.com/macros/s/AKfycbxY1yXfvrNPrvi0hKs1bHc8LmkEdaX-APvdMs1W0VlBJD-0cSGLHIyFXp8oQ07fyMDL/exec';
-    if(sheetUrl && sheetUrl.startsWith('http')) {
-        fetch(sheetUrl + "?action=track_view&form_name=" + encodeURIComponent('Konsultasi Gratis 30 Menit'), {
-            method: 'GET'
-        }).catch(e => console.log('Tracking silent fail', e));
-    }
-})();
-
-
-
-document.getElementById('im-form').addEventListener('submit', function(e) { 
-    e.preventDefault(); 
-    
-    const telInput = document.querySelector('#im-form input[type="tel"]');
-    if(telInput && !validateWA(telInput.value)) {
-        document.getElementById('im-error-modal').classList.add('im-show');
-        return false;
-    }
-    
-    const btn = document.getElementById('im-submit-btn'); 
-    btn.innerText = 'Memproses...'; 
-    btn.style.opacity = '0.7'; 
-    btn.style.pointerEvents = 'none'; 
-    
-    const formData = new FormData(this); 
-    let formObj = {}; 
-    
-    for (let [key, value] of formData.entries()) { 
-        if (formObj[key]) {
-            formObj[key] += ', ' + value; 
-        } else {
-            formObj[key] = value; 
-        }
-    } 
-    
-    let jsonData = { 
-        Waktu_Order: new Date().toLocaleString(), 
-        Nama_Form: 'Konsultasi Gratis 30 Menit', 
-        wa_target: '',
-        Status_Pesanan: 'SUBMITTED',
-        Lead_ID: sessionLeadId
-    }; 
-    
-    for (let key in formObj) { 
-        jsonData[key] = formObj[key]; 
-    } 
-    
-    let finalTotal = calculateTotal(); 
-    if(finalTotal > 0) { 
-        jsonData['Total_Tagihan'] = finalTotal; 
-    } 
-    
-    const sheetUrl = 'https://script.google.com/macros/s/AKfycbxY1yXfvrNPrvi0hKs1bHc8LmkEdaX-APvdMs1W0VlBJD-0cSGLHIyFXp8oQ07fyMDL/exec'; 
-    
-    // Tembak Tracking Pixel
-    
-    
-    if(sheetUrl && sheetUrl.startsWith('http')) { 
-        // 🔥 CORS SAKTI FIX: Mengubah Content-Type menjadi text/plain agar Google tidak memblokir (Mode no-cors dihilangkan agar request sukses terkirim)
-        fetch(sheetUrl, { 
-            method: 'POST', 
-            headers: {
-                'Content-Type': 'text/plain;charset=utf-8',
-            }, 
-            body: JSON.stringify(jsonData) 
-        }).then(response => {
-            console.log("Response dari server:", response);
-            btn.innerText = 'Terkirim ✓'; 
-            btn.style.background = '#10b981'; 
-            btn.style.color = '#fff';
-        }).catch((err) => { 
-            console.error("Gagal mengirim data:", err);
-            btn.innerText = 'Gagal Mengirim ✕'; 
-            btn.style.background = '#ef4444'; 
-            btn.style.color = '#fff';
-            
-            // Re-enable button biar bisa dicoba lagi
-            setTimeout(() => {
-                btn.innerText = '💬 Booking Konsultasi';
-                btn.style.background = 'linear-gradient(135deg, #60a5fa, #2563eb)';
-                btn.style.opacity = '1';
-                btn.style.pointerEvents = 'auto';
-            }, 3000);
-        }); 
-    } else { 
-        console.error("URL Web App kosong!");
-        btn.innerText = 'Error URL ✕'; 
-        btn.style.background = '#ef4444'; 
-    } 
-});
-</script>
-
+        });
+    </script>
+</body>
+</html>
